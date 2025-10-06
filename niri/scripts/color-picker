@@ -1,0 +1,3 @@
+#!/bin/sh
+
+notify-send "Hyprpicker 🎨" "You picked the color $(hyprpicker -a)" --icon ~/.config/niri/assets/picker.png

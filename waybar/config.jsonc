@@ -1,0 +1,137 @@
+// -*- mode: jsonc -*-
+{
+    "layer": "top", // Waybar at top layer
+    "position": "top", // Waybar position (top|bottom|left|right)
+    "height": 40, // Waybar height (to be removed for auto height)
+
+    // "width": 1280, // Waybar width
+    "spacing": 4, // Gaps between modules (4px)
+    // Choose the order of the modules
+    "modules-left": [
+        "group/workspaces-container",
+        "custom/separator",
+        "group/tools-expander"
+    ],
+    "modules-center": [
+        "clock",
+        "custom/update"
+    ],
+    "modules-right": [
+        "group/tray-expander",
+        "custom/notification",
+        "pulseaudio"
+    ],
+
+    "custom/separator": {
+        "format": "|"
+    },
+
+    "group/workspaces-container": {
+        "modules": ["niri/workspaces"]
+    },
+
+    "group/tools-expander": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 100,
+            "children-class": "tools-group-item"
+        },
+        "modules": ["custom/tools-icon", "custom/install", "custom/install-aur", "custom/remover", "custom/pass-gen", "custom/color-picker"]
+    },
+
+    "custom/tools-icon": {
+        "format": "<span font='Material Symbols Rounded' weight='1000' size='large' color='white'>handyman</span>",
+        "tooltip": false
+    },
+
+    "custom/install": {
+        "format": "<span font='Material Symbols Rounded' weight='800' size='x-large' color='white'>download</span>",
+        "tooltip-format": "Install packages from pacman.",
+        "on-click": "kitty -T Pacman-Installer -e sh ~/.config/niri/scripts/installer"
+    },
+
+    "custom/install-aur": {
+        "format": "<span font='Material Symbols Rounded' weight='800' size='large' color='white'>deployed_code_update</span>",
+        "tooltip-format": "Install packages from AUR.",
+        "on-click": "kitty -T Aur-Installer -e sh ~/.config/niri/scripts/aur-installer"
+    },
+
+    "custom/remover": {
+        "format": "<span font='Material Symbols Rounded' weight='800' size='large' color='white'>delete_forever</span>",
+        "tooltip-format": "Remove Packages.",
+        "on-click": "kitty -T Remover -e sh ~/.config/niri/scripts/remover"
+    },
+
+    "custom/pass-gen": {
+        "format": "<span font='Material Symbols Rounded' weight='800' size='large' color='white'>lock_open</span>",
+        "tooltip-format": "Generate a secure password.",
+        "on-click": "kitty -T Pass-Gen -e ~/.config/niri/scripts/pass-gen"
+    },
+
+    "custom/color-picker": {
+        "format": "<span font='Material Symbols Rounded' weight='800' size='large' color='white'>colorize</span>",
+        "tooltip-format": "Pick a color from your screen!",
+        "on-click": "sh ~/.config/niri/scripts/color-picker"
+    },
+
+    "group/tray-expander": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 100,
+            "children-class": "tray-group-item"
+        },
+        "modules": ["custom/expand-icon", "tray"]
+    },
+
+    "custom/expand-icon": {
+        "format": "<span font='Material Symbols Rounded' weight='1000' size='xx-large' color='white'>chevron_left</span>",
+        "tooltip": false
+    },
+    
+    "tray": {
+        "icon-size": 15,
+        "spacing": 10
+    },
+
+    "custom/update": {
+        "exec": "bash -c 'updates=$(pacman -Qu | wc -l); if [ $updates -gt 0 ]; then echo \"| $updates updates  \"; fi'",
+        "interval": 60,
+        "on-click": "kitty -T Updater -e sh ~/.config/niri/scripts/updater",
+        "tooltip-format": "Arch need to be updated!",
+        "format": "{}",
+        "signal": 7
+    },
+
+    "niri/workspaces": {
+        "all-outputs": true,
+        "format": "{icon}",
+        "format-icons": {
+            "active": "󱓻"
+        }
+    },
+
+    "clock": {
+        "tooltip": false,
+        "format": "{:%A %H:%M}", 
+        "format-alt": "{:%d/%m/%Y}",
+    },
+
+    "pulseaudio": {
+        "format": "{volume}% {icon}",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-muted": "Mute! ",
+        "format-source": "{volume}% ",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", " "]
+        },
+        "on-click": "pavucontrol"
+    }
+}
